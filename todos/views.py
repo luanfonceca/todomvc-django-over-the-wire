@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.views import View
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.http import HttpResponseRedirect
 
 from todos.forms import ToDoForm, CompleteToDoForm
 from todos.models import ToDo
@@ -15,8 +16,15 @@ class BaseToDoView():
 
     def get_success_url(self):
         url_name = self.request.POST.get('next', self.page)
-
         return reverse_lazy(f'todos:{url_name}')
+
+    def form_valid(self, form):
+        super().form_valid(form)
+        return HttpResponseRedirect(self.get_success_url(), status=303)
+
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        return self.render_to_response(self.get_context_data(form=form), status=422)
 
 
 class ListToDos(BaseToDoView, ListView):
@@ -24,7 +32,6 @@ class ListToDos(BaseToDoView, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         context.update(
             page=self.page,
             todo_form=ToDoForm(),
@@ -33,7 +40,6 @@ class ListToDos(BaseToDoView, ListView):
             has_completed_todos=ToDo.objects.filter(is_completed=True).exists(),
             total_active_todos=ToDo.objects.filter(is_completed=False).count(),
         )
-
         return context
 
 
@@ -66,7 +72,6 @@ class DeleteToDo(BaseToDoView, DeleteView):
 class ClearCompletedToDos(BaseToDoView, View):
     def post(self, request, *args, **kwargs):
         ToDo.objects.filter(is_completed=True).delete()
-
         return redirect(self.get_success_url())
 
 

@@ -9,9 +9,10 @@
     <link rel="stylesheet" href="{% static 'todomvc-common/base.css' %}">
     <link rel="stylesheet" href="{% static 'todomvc-app-css/index.css' %}">
 
-    <script src="{% static '@hotwired/turbo/dist/turbo.es5-umd.js' %}"></script>
+    <script src="{% static '@hotwired/turbo/dist/turbo.es2017-umd.js' %}"></script>
   </head>
   <body>
+    <div class="turbo-progress-bar"></div>
     <section class="todoapp">
       {% block content %}{% endblock content %}
     </section>
@@ -21,7 +22,7 @@
       <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
     </footer>
 
-    <script src="{% static 'todomvc-common/base.js' %}"></script>
-    <script src="{% static 'todos/js/index.js' %}"></script>
+    <script src="{% static 'todomvc-common/base.js' %}" async defer></script>
+    <script src="{% static 'todos/js/index.js' %}" async defer></script>
   </body>
 </html>

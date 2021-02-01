@@ -9,7 +9,7 @@ Array.from(document.querySelectorAll('.toggle')).forEach((todo) => {
       body: JSON.stringify({
         is_completed: isChecked,
       })
-    }).then(res => window.location.reload());
+    }).then(res => Turbo.visit(window.location));
   });
 });
 
