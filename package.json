@@ -1,6 +1,7 @@
 {
   "private": true,
   "dependencies": {
+    "@hotwired/turbo": "^7.0.0-beta.4",
     "todomvc-app-css": "^2.0.0",
     "todomvc-common": "^1.0.0"
   },
