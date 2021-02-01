@@ -9,6 +9,7 @@ class ToDo(models.Model):
     class Meta:
         verbose_name = 'ToDo'
         verbose_name_plural = 'ToDos'
+        ordering = ['id']
 
     def __str__(self):
         return self.title
