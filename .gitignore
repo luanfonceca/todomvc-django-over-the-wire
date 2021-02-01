@@ -1,0 +1,6 @@
+node_modules/
+staticfiles/
+db.sqlite3
+package-lock.json
+*/__pycache__/
+*.pyc

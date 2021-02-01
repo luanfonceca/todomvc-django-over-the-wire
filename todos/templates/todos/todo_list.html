@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+  <header class="header">
+    <h1>todos</h1>
+
+    <form method="POST" action="{% url 'todos:create' %}">
+      {% csrf_token %}
+      <input type="hidden" name="next" value={{ page }} />
+      {% render_field todo_form.title class="new-todo" placeholder=todo_form.title.help_text autofocus=True %}
+    </form>
+  </header>
+
+  <section class="main">
+    {% if has_todos %}
+      <form method="POST" action="{% url 'todos:toggle-all' %}?is_completed={{ request.GET.is_completed }}">
+        <input id="toggle-all" class="toggle-all" type="submit">
+        <label for="toggle-all">Mark all as complete</label>
+        {% csrf_token %}
+      </form>
+    {% endif %}
+
+    <ul class="todo-list">
+      {% for todo in todos %}
+        <li {% if todo.is_completed %}class="completed"{% endif %}>
+          <div class="view">
+            {% if todo.is_completed %}
+              {% render_field complete_todo_form.is_completed class="toggle" data-pk=todo.pk checked="checked" %}
+            {% else %}
+              {% render_field complete_todo_form.is_completed class="toggle" data-pk=todo.pk %}
+            {% endif %}
+            
+            <label>{{ todo }}</label>
+
+            <form method="POST" action="{% url 'todos:delete' todo.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="next" value={{ page }} />
+              <button type="submit" class="destroy"></button>
+            </form>
+          </div>
+
+          <form method="POST" action="{% url 'todos:update' todo.pk %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value={{ page }} />
+            {% render_field todo_form.title class="edit" value=todo.title autofocus=True %}
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  {% if has_todos %}
+    <footer class="footer">
+      <span class="todo-count">
+        <strong>{{ total_active_todos }}</strong> item{{ total_active_todos|pluralize }} left
+      </span>
+
+      <ul class="filters">
+        <li>
+          <a
+            {% if page == 'list' %}class="selected"{% endif %}
+            href="{% url 'todos:list' %}"
+          >
+            All
+          </a>
+        </li>
+        <li>
+          <a
+            {% if page == 'list-active' %}class="selected"{% endif %}
+            href="{% url 'todos:list-active' %}"
+          >
+            Active
+          </a>
+        </li>
+        <li>
+          <a
+            {% if page == 'list-completed' %}class="selected"{% endif %}
+            href="{% url 'todos:list-completed' %}"
+          >
+            Completed
+          </a>
+        </li>
+      </ul>
+
+      {% if has_completed_todos %}
+        <form action="{% url 'todos:clear-completed' %}" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="next" value={{ page }} />
+          <button type="submit" class="clear-completed">Clear completed</button>
+        </form>
+      {% endif %}
+    </footer>
+  {% endif %}  
+{% endblock content %}

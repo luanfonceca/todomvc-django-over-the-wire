@@ -1,0 +1,17 @@
+{
+  "name": "ToDoMVC and Django over the Wire",
+  "description": "ToDoMVC implementation using Django over the wire.",
+  "repository": "https://github.com/luanfonceca/todomvc-django-over-the-wire",
+  "logo": "",
+  "keywords": ["todomvc", "django", "hotwire"],
+  "buildpacks": [
+      {"url": "heroku/python"},
+      {"url": "heroku/nodejs"}
+  ],
+  "env": {
+    "DISABLE_COLLECTSTATIC": {
+      "description": "Don't run python manage.py collectstatic --noinput on deploy",
+      "value": "1"
+    }
+  }
+}
