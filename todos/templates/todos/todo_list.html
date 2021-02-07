@@ -52,7 +52,7 @@
   </section>
 
   {% if has_todos %}
-    <footer class="footer">
+    <footer class="footer" data-turbo-permanent>
       <span class="todo-count">
         <strong>{{ total_active_todos }}</strong> item{{ total_active_todos|pluralize }} left
       </span>

@@ -5,6 +5,9 @@ from django.views import View
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http import HttpResponseRedirect
+from turbo_response.views import (
+    TurboCreateView, TurboUpdateView,
+)
 
 from todos.forms import ToDoForm, CompleteToDoForm
 from todos.models import ToDo
@@ -53,15 +56,15 @@ class ListCompletedToDos(ListToDos):
     page = 'list-completed'
 
 
-class CreateToDo(BaseToDoView, CreateView):
+class CreateToDo(BaseToDoView, TurboCreateView):
     form_class = ToDoForm
 
 
-class UpdateToDo(BaseToDoView, UpdateView):
+class UpdateToDo(BaseToDoView, TurboUpdateView):
     form_class = ToDoForm
 
 
-class CompleteToDo(BaseToDoView, UpdateView):
+class CompleteToDo(BaseToDoView, TurboUpdateView):
     form_class = CompleteToDoForm
 
 
